@@ -42,14 +42,20 @@ public class RedwoodConfiguration  {
    */
   private LinkedList<Runnable> tasks = new LinkedList<>();
 
-  private OutputHandler outputHandler = Redwood.ConsoleHandler.out();
+  private OutputHandler outputHandler;
   private File defaultFile = new File("/dev/null");
   private int channelWidth = 0;
 
   /**
    * Private constructor to prevent use of "new RedwoodConfiguration()"
    */
-  protected RedwoodConfiguration(){}
+  protected RedwoodConfiguration(int... args){
+      //Variable number of arguments, including no  args
+      if (args.length == 0){        
+          //original behaviour
+          this.outputHandler = Redwood.ConsoleHandler.out();
+      }
+  }
 
   /**
    * Apply this configuration to Redwood
@@ -431,7 +437,18 @@ public class RedwoodConfiguration  {
   public static RedwoodConfiguration empty(){
     return new RedwoodConfiguration().clear();
   }
-
+  
+  /**
+   * An empty Redwood configuration - new behaviour.
+   * Note that without a Console Handler, Redwood will not print anything
+   * @return An empty Redwood Configuration object.
+   */
+  public static RedwoodConfiguration empty2(){
+      int dummy = 100;
+      RedwoodConfiguration rc = new RedwoodConfiguration(100);
+      return rc;
+  }
+  
   /**
    * A standard  Redwood configuration, which prints to the console with channels.
    * It does not show debug level messages (but shows warning and error messages).
